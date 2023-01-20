@@ -14,12 +14,16 @@ export default function App() {
 
   const plus = () => {
     setResult(parseInt(ekaNum) + parseInt(tokaNum))
+    setText(ekaNum + ' + ' + tokaNum + ' = ' + result)
     setData([...data, {key: text}]);
     setText('');
   };
 
   const minus = () => {
     setResult(parseInt(ekaNum) - parseInt(tokaNum))
+    setText(ekaNum + ' + ' + tokaNum + ' = ' + result)
+    setData([...data, {key: text}]);
+    setText('');
   };
 
   return (
@@ -42,6 +46,7 @@ export default function App() {
       <View style={{width: 20}} />
       <Button style= {{flex:6}} title="-" onPress={minus}/>
       </View>
+      <Text> History: </Text>
       <FlatList
       data={data}
       renderItem={({item}) => <Text>{item.key}</Text>}

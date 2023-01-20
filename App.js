@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
 import { useState } from 'react';
 
 export default function App() {
@@ -7,10 +7,15 @@ export default function App() {
   const [ekaNum, setEkaNum] = useState('');
   const [tokaNum, setTokaNum] = useState('')
   const [result, setResult] = useState('');
+
+  const [text, setText] = useState('');
+  const [data, setData] = useState([]);
   
 
   const plus = () => {
     setResult(parseInt(ekaNum) + parseInt(tokaNum))
+    setData([...data, {key: text}]);
+    setText('');
   };
 
   const minus = () => {
@@ -37,6 +42,11 @@ export default function App() {
       <View style={{width: 20}} />
       <Button style= {{flex:6}} title="-" onPress={minus}/>
       </View>
+      <FlatList
+      data={data}
+      renderItem={({item}) => <Text>{item.key}</Text>}
+      keyExtractor={(item,index) => index.toString()}
+      />
       <StatusBar style="auto" />
       
     </View>

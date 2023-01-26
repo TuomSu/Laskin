@@ -17,13 +17,13 @@ const calculate = operator => {
   switch (operator){
     case '+':
       setResult(num1+num2);
-      setData([...data, { key: ekaNum  +' + '+ tokaNum + ' = '+ result}]);
+      setData([...data, { key: num1  +' + '+ num2 + ' = '+ (num1+num2)}]);
       
       break;
 
     case '-':
       setResult(num1-num2);
-      setData([...data, { key: ekaNum  +' - '+ tokaNum + ' = '+ result}]);
+      setData([...data, { key: num1  +' - '+ num2 + ' = '+ (num1-num2)}]);
       break;
   }
 

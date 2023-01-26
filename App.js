@@ -1,57 +1,67 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
-import { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 export default function App() {
 
   const [ekaNum, setEkaNum] = useState('');
   const [tokaNum, setTokaNum] = useState('')
   const [result, setResult] = useState('');
-
-  const [text, setText] = useState('');
   const [data, setData] = useState([]);
+
+  const initialFocus = useRef(null);
   
+const calculate = operator => {
+  const [num1, num2] = [Number(ekaNum), Number(tokaNum)];
 
-  const plus = () => {
-    setResult(parseInt(ekaNum) + parseInt(tokaNum))
-    setText(ekaNum + ' + ' + tokaNum + ' = ' + result)
-    setData([...data, {key: text}]);
-    setText('');
-  };
+  switch (operator){
+    case '+':
+      setResult(num1+num2);
+      setData([...data, { key: ekaNum  +' + '+ tokaNum + ' = '+ result}]);
+      
+      break;
 
-  const minus = () => {
-    setResult(parseInt(ekaNum) - parseInt(tokaNum))
-    setText(ekaNum + ' + ' + tokaNum + ' = ' + result)
-    setData([...data, {key: text}]);
-    setText('');
-  };
+    case '-':
+      setResult(num1-num2);
+      setData([...data, { key: ekaNum  +' - '+ tokaNum + ' = '+ result}]);
+      break;
+  }
+
+  setEkaNum('');
+  setTokaNum('');
+  initialFocus.current.focus();
+  
+}
+  
 
   return (
     <View style={styles.container}>
       <Text> Result: {result} </Text>
       <TextInput
-     style={styles.input}
-     onChangeText={ ekaNum => setEkaNum(ekaNum)}
+     style={styles.input} ref={initialFocus}
+     onChangeText={ text => setEkaNum(text)}
      value={ekaNum}
      keyboardType="numeric"
      />
      <TextInput
      style={styles.input}
-     onChangeText={tokaNum => setTokaNum(tokaNum)}
+     onChangeText={text => setTokaNum(text)}
      value={tokaNum}
         keyboardType="numeric"
      />
      <View style={styles.button}>
-      <Button style={{flex:6}} title="+" onPress={plus}/>
+      <Button style={{flex:6}} title="+" onPress={() => calculate ('+')}/>
       <View style={{width: 20}} />
-      <Button style= {{flex:6}} title="-" onPress={minus}/>
+      <Button style= {{flex:6}} title="-" onPress={() => calculate ('-')}/>
       </View>
       <Text> History: </Text>
-      <FlatList
+      <View style={styles.input}> 
+    <FlatList
       data={data}
-      renderItem={({item}) => <Text>{item.key}</Text>}
-      keyExtractor={(item,index) => index.toString()}
-      />
+      renderItem={({ item }) =>
+        <Text>{item.key}</Text>
+      } keyExtractor={(item, index) => index.toString()}
+    /></View>
       <StatusBar style="auto" />
       
     </View>
@@ -60,7 +70,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
@@ -74,6 +84,7 @@ const styles = StyleSheet.create({
   alignItems: 'center',
   justifyContent: 'space-between'
 },
+
 
 
 });

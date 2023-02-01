@@ -1,72 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
-import React, { useState, useRef } from 'react';
+import { NavigationContainer } from'@react-navigation/native';
+import { createNativeStackNavigator } from'@react-navigation/native-stack';
+import Calculator from './Calculator';
+import History from './History';
+import React from 'react';
+import { StyleSheet } from 'react-native';
+
+const Stack = createNativeStackNavigator();
+
+
 
 export default function App() {
 
-  const [ekaNum, setEkaNum] = useState('');
-  const [tokaNum, setTokaNum] = useState('')
-  const [result, setResult] = useState('');
-  const [data, setData] = useState([]);
-
-  const initialFocus = useRef(null);
-  
-const calculate = operator => {
-  const [num1, num2] = [Number(ekaNum), Number(tokaNum)];
-
-  switch (operator){
-    case '+':
-      setResult(num1+num2);
-      const total = (num1+num2)
-      setData([...data, { key: num1  +' + '+ num2 + ' = '+ total}]);
-      
-      break;
-
-    case '-':
-      setResult(num1-num2);
-      const totalm = (num1-num2)
-      setData([...data, { key: num1  +' - '+ num2 + ' = '+ totalm}]);
-      break;
-  }
-
-  setEkaNum('');
-  setTokaNum('');
-  initialFocus.current.focus();
-  
-}
-  
-
   return (
-    <View style={styles.container}>
-      <Text> Result: {result} </Text>
-      <TextInput
-     style={styles.input} ref={initialFocus}
-     onChangeText={ text => setEkaNum(text)}
-     value={ekaNum}
-     keyboardType="numeric"
-     />
-     <TextInput
-     style={styles.input}
-     onChangeText={text => setTokaNum(text)}
-     value={tokaNum}
-        keyboardType="numeric"
-     />
-     <View style={styles.button}>
-      <Button style={{flex:6}} title="+" onPress={() => calculate ('+')}/>
-      <View style={{width: 20}} />
-      <Button style= {{flex:6}} title="-" onPress={() => calculate ('-')}/>
-      </View>
-      <Text> History: </Text>
-      <View style={styles.input}> 
-    <FlatList
-      data={data}
-      renderItem={({ item }) =>
-        <Text>{item.key}</Text>
-      } keyExtractor={(item, index) => index.toString()}
-    /></View>
-      <StatusBar style="auto" />
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Calculator" component={Calculator} />
+        <Stack.Screen name="History" component={History} />
+        </Stack.Navigator>
+        </NavigationContainer>
       
-    </View>
   );
 }
 
